@@ -15,14 +15,7 @@ export const createProject = async (req, res) => {
       status,
     } = req.body;
 
-    if (
-      !title ||
-      !categoryId ||
-      !location ||
-      !description ||
-      !images ||
-      !status
-    ) {
+    if (!title || !categoryId || !location || !images || !status) {
       return res.status(400).json({
         statusCode: 400,
         success: false,
@@ -70,8 +63,8 @@ export const getAllProjects = async (req, res) => {
       return {
         ...rest,
         category: {
-          _id: project.categoryId._id,
-          name: project.categoryId.name,
+          _id: project.categoryId?._id,
+          name: project.categoryId?.name,
         },
       };
     });
