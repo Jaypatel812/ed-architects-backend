@@ -1,4 +1,5 @@
 import Category from "../models/category.model.js";
+import Project from "../models/project.model.js";
 import { ApiError } from "../utils/ApiError.js";
 
 export const createCategory = async (req, res) => {
@@ -110,6 +111,18 @@ export const updateCategory = async (req, res) => {
 
 export const deleteCategory = async (req, res) => {
   try {
+    const existingProjects = await Project.findOne({
+      categoryId: req.params.id,
+    });
+
+    if (existingProjects) {
+      return res.status(400).json({
+        statusCode: 400,
+        success: false,
+        message: "Category cannot be deleted as it is associated with projects",
+      });
+    }
+
     const category = await Category.findByIdAndDelete(req.params.id);
 
     if (!category) {

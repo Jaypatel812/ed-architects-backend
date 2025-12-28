@@ -57,7 +57,10 @@ export const createProject = async (req, res) => {
 
 export const getAllProjects = async (req, res) => {
   try {
-    const projects = await Project.find().populate("categoryId");
+    const { categoryId } = req.query;
+    const filter = categoryId ? { categoryId } : {};
+    const projects = await Project.find(filter).populate("categoryId");
+
     const data = projects.map((project) => {
       const { categoryId, ...rest } = project._doc;
       return {
