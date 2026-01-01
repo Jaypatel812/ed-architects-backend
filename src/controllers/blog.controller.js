@@ -1,4 +1,6 @@
 import Blog from "../models/blog.model.js";
+import fs from "fs";
+import path from "path";
 
 export const createBlog = async (req, res) => {
   try {
@@ -126,6 +128,25 @@ export const deleteBlog = async (req, res) => {
         message: "Blog not found",
       });
     }
+
+    // Delete associated images
+    if (blog.images && Array.isArray(blog.images)) {
+      blog.images.forEach((imageUrl) => {
+        try {
+          const relativePath = imageUrl.startsWith("/")
+            ? imageUrl.slice(1)
+            : imageUrl;
+          const fullPath = path.join(process.cwd(), "public", relativePath);
+
+          if (fs.existsSync(fullPath)) {
+            fs.unlinkSync(fullPath);
+          }
+        } catch (err) {
+          console.error(`Failed to delete image: ${imageUrl}`, err);
+        }
+      });
+    }
+
     res.status(200).json({
       statusCode: 200,
       success: true,

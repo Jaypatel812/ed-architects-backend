@@ -1,4 +1,6 @@
 import Project from "../models/project.model.js";
+import fs from "fs";
+import path from "path";
 
 export const createProject = async (req, res) => {
   try {
@@ -146,6 +148,25 @@ export const deleteProject = async (req, res) => {
         message: "Project not found",
       });
     }
+
+    // Delete associated images
+    if (project.images && Array.isArray(project.images)) {
+      project.images.forEach((imageUrl) => {
+        try {
+          const relativePath = imageUrl.startsWith("/")
+            ? imageUrl.slice(1)
+            : imageUrl;
+          const fullPath = path.join(process.cwd(), "public", relativePath);
+
+          if (fs.existsSync(fullPath)) {
+            fs.unlinkSync(fullPath);
+          }
+        } catch (err) {
+          console.error(`Failed to delete image: ${imageUrl}`, err);
+        }
+      });
+    }
+
     res.status(200).json({
       statusCode: 200,
       success: true,
