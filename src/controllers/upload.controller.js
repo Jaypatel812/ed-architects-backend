@@ -1,6 +1,10 @@
 import moveFile from "../utils/moveFile.js";
 import fs from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export const uploadImages = async (req, res) => {
   try {
@@ -45,10 +49,10 @@ export const deleteImages = async (req, res) => {
       const relativePath = imageUrl.startsWith("/")
         ? imageUrl.slice(1)
         : imageUrl;
-      const fullPath = path.join(process.cwd(), "public", relativePath);
+      const fullPath = path.join(__dirname, "../../public", relativePath);
 
       // Security check: ensure the path is within the public/uploads directory
-      const uploadsDir = path.join(process.cwd(), "public", "uploads");
+      const uploadsDir = path.join(__dirname, "../../public", "uploads");
 
       const resolvedFullPath = path.resolve(fullPath);
       const resolvedUploadsDir = path.resolve(uploadsDir);
