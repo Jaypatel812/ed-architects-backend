@@ -2,7 +2,6 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import path from "path";
-import { fileURLToPath } from "url";
 import userRoutes from "./routes/user.routes.js";
 import categoryRoutes from "./routes/category.routes.js";
 import projectRoutes from "./routes/project.routes.js";
@@ -10,16 +9,13 @@ import blogRoutes from "./routes/blog.routes.js";
 import uploadRoutes from "./routes/upload.routes.js";
 import { errorHandler } from "./middlewares/error.middleware.js";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 const app = express();
 
 // Middlewares
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "../public")));
+app.use(express.static(path.join(process.cwd(), "public")));
 
 // Routes
 app.use("/api/users", userRoutes);
