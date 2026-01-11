@@ -7,6 +7,7 @@ import categoryRoutes from "./routes/category.routes.js";
 import projectRoutes from "./routes/project.routes.js";
 import blogRoutes from "./routes/blog.routes.js";
 import uploadRoutes from "./routes/upload.routes.js";
+import homeRoutes from "./routes/home.routes.js";
 import { errorHandler } from "./middlewares/error.middleware.js";
 
 const app = express();
@@ -23,6 +24,7 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/projects", projectRoutes);
 app.use("/api/blogs", blogRoutes);
 app.use("/api/uploads", uploadRoutes);
+app.use("/api/home", homeRoutes);
 
 app.get("/", (req, res) => {
   res.send("Server is running 🚀");
