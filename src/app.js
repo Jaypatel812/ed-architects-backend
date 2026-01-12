@@ -16,11 +16,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
-app.use(express.static(path.join(process.cwd(), "public")), {
-  maxAge: "30d", // cache for 30 days
-  etag: true,
-  lastModified: true,
-});
+app.use(
+  express.static(path.join(process.cwd(), "public"), {
+    maxAge: "30d", // cache for 30 days
+    etag: true,
+    lastModified: true,
+  })
+);
 
 // Routes
 app.use("/api/users", userRoutes);
