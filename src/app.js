@@ -9,6 +9,7 @@ import blogRoutes from "./routes/blog.routes.js";
 import uploadRoutes from "./routes/upload.routes.js";
 import homeRoutes from "./routes/home.routes.js";
 import { errorHandler } from "./middlewares/error.middleware.js";
+import compression from "compression";
 
 const app = express();
 
@@ -16,6 +17,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
+app.use(compression());
 app.use(
   express.static(path.join(process.cwd(), "public"), {
     maxAge: "30d", // cache for 30 days
